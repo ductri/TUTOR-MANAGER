@@ -1,4 +1,4 @@
-package Setting;
+package hcmut.tutorclub.setting;
 
 import java.awt.Font;
 import java.awt.FontMetrics;

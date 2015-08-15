@@ -1,4 +1,4 @@
-package com;
+package hcmut.tutorclub.model.printer;
 
 public class Margin {
 	private double left;
@@ -36,10 +36,5 @@ public class Margin {
 		this.right = right;
 		this.bottom = bottom;
 	}
-	
-	
-	
-	
-	
 	
 }

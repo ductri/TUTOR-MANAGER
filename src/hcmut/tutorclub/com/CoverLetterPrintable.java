@@ -1,4 +1,4 @@
-package com;
+package hcmut.tutorclub.com;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -6,15 +6,15 @@ import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 
-import model.CoverLetter;
-import model.PrintableContent;
-import model.TextLine;
+import hcmut.tutorclub.model.printer.CoverLetter;
+import hcmut.tutorclub.model.printer.PrintableContent;
+import hcmut.tutorclub.model.printer.TextLine;
 
 
-public class CoverLetterPrinter implements Printable {
+public class CoverLetterPrintable implements Printable {
 	
 	CoverLetter coverLetter;
-	public CoverLetterPrinter(CoverLetter coverLetter) {
+	public CoverLetterPrintable(CoverLetter coverLetter) {
 		this.coverLetter=coverLetter;
 	}
 

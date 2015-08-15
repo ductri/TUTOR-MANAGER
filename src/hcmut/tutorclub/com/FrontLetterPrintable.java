@@ -1,4 +1,4 @@
-package com;
+package hcmut.tutorclub.com;
 
 import java.awt.Font;
 import java.awt.Graphics;
@@ -12,15 +12,15 @@ import java.util.Calendar;
 
 import javax.imageio.ImageIO;
 
-import model.ImageData;
-import model.Letter;
-import model.PrintableContent;
-import model.TextLine;
+import hcmut.tutorclub.model.printer.ImageData;
+import hcmut.tutorclub.model.printer.Letter;
+import hcmut.tutorclub.model.printer.PrintableContent;
+import hcmut.tutorclub.model.printer.TextLine;
 
-public class LetterPrinter implements Printable {
+public class FrontLetterPrintable implements Printable {
 	
 	Letter letter;
-	public LetterPrinter(Letter letter) {
+	public FrontLetterPrintable(Letter letter) {
 		this.letter=letter;
 	}
 	

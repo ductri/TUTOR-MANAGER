@@ -1,4 +1,4 @@
-package com;
+package hcmut.tutorclub.com;
 
 import java.awt.Font;
 import java.awt.Graphics;
@@ -7,10 +7,11 @@ import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 
-import model.PrintableContent;
-import model.TextLine;
+import hcmut.tutorclub.model.printer.Margin;
+import hcmut.tutorclub.model.printer.PrintableContent;
+import hcmut.tutorclub.model.printer.TextLine;
 
-public class BackLetter implements Printable {
+public class BackLetterPrintable implements Printable {
 
 	@Override
 	public int print(Graphics graphics, PageFormat pageFormat, int pageIndex)

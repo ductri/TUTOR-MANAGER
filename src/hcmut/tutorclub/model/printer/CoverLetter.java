@@ -1,4 +1,4 @@
-package model;
+package hcmut.tutorclub.model.printer;
 
 public class CoverLetter {
 	String name;

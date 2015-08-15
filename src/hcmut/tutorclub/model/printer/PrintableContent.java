@@ -1,4 +1,4 @@
-package model;
+package hcmut.tutorclub.model.printer;
 
 import java.awt.Font;
 import java.awt.Graphics;
@@ -7,9 +7,7 @@ import java.awt.print.PageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.Margin;
-
-import Setting.FontSetting;
+import hcmut.tutorclub.setting.FontSetting;
 
 public class PrintableContent {
 	

@@ -1,4 +1,4 @@
-package model;
+package hcmut.tutorclub.model.printer;
 
 import java.awt.Font;
 
