@@ -76,7 +76,6 @@ public class ClassManagerController implements IClassManagerController {
         	List<WorksheetEntry> worksheets = worksheetFeed.getEntries();
         	WorksheetEntry worksheetEntry = null;
         	for (WorksheetEntry worksheet:worksheets) {
-        		System.out.println(worksheet.getTitle().getPlainText());
         		if (worksheet.getTitle().getPlainText().equals(WORKSHEET_NAME)) {
         			worksheetEntry = worksheet;
         			break;
