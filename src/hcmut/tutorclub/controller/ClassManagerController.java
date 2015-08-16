@@ -1,5 +1,6 @@
 package hcmut.tutorclub.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -19,6 +20,8 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.util.store.DataStoreFactory;
+import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.gdata.client.spreadsheet.SpreadsheetService;
 import com.google.gdata.data.spreadsheet.ListEntry;
 import com.google.gdata.data.spreadsheet.ListFeed;
@@ -36,6 +39,7 @@ public class ClassManagerController implements IClassManagerController {
 	private static final String SHEET_NAME = "Copy of DICH-VU.xlsx";
 	private static final String WORKSHEET_NAME = "GIA SƯ 2015";
 	private static final String KEYWORD = "mssv";
+	private static final String SHEETS_SCOPE = "https://spreadsheets.google.com/feeds";
 	
 	private Credential credential;
 	private boolean hasCredential;
@@ -61,8 +65,6 @@ public class ClassManagerController implements IClassManagerController {
         SpreadsheetEntry spreadsheetEntry = null;
         // Iterate through all of the spreadsheets returned
         for (SpreadsheetEntry spreadsheet : spreadsheets) {
-          // Print the title of this spreadsheet to the screen
-          System.out.println(spreadsheet.getTitle().getPlainText());
           if (spreadsheet.getTitle().getPlainText().equals(SHEET_NAME)) {
         	  spreadsheetEntry = spreadsheet;
         	  break;
@@ -142,10 +144,12 @@ public class ClassManagerController implements IClassManagerController {
     	GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(
     			jsonFactory, new InputStreamReader(
     					ClassManagerController.class.getResourceAsStream("/client_secrets.json")));
-    	Collection<String> scopes = Collections.singleton("https://spreadsheets.google.com/feeds");    	
+    	Collection<String> scopes = Collections.singleton(SHEETS_SCOPE);
+    	File file = new File("oauth_store");
+    	DataStoreFactory dataStoreFactory = new FileDataStoreFactory(file);
     	
         GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
-        		transport, jsonFactory, clientSecrets, scopes).build();
+        		transport, jsonFactory, clientSecrets, scopes).setDataStoreFactory(dataStoreFactory).build();
         
         Credential credential = new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver())
         		.authorize("");

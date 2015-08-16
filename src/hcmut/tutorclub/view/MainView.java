@@ -2,6 +2,7 @@ package hcmut.tutorclub.view;
 
 
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
@@ -19,12 +20,16 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 
 import com.google.gdata.util.ServiceException;
 
@@ -61,8 +66,11 @@ public class MainView implements IMainView{
 	private JLayeredPane layeredPane_ClassManager;
 	private JScrollPane scrollPane;
 	private JTable table;
-	private String[] headers = new String[] {"ID","Tên phụ huynh", "Lớp"};
-	private String[][] data = new String[5][];
+	private String[] headers = new String[] {"ID", "Lớp", "Môn", "Giới tính hs", 
+			"Tên phụ huynh", "Số điện thoại ph", "Địa chỉ", "Ngày đăng ký", 
+			"Thời gian", "Lương", "Yêu cầu", "Thông tin khác", "Phí giao lớp", 
+			"Người giao lớp", "Ngày giao lớp"};
+	private String[][] data;
 	
 	/****************************************
 	 *                                       *
@@ -115,18 +123,38 @@ public class MainView implements IMainView{
 							try {
 								classManagerController.authorize();
 								List<Class> classes = classManagerController.findClassNotHandOver();
-								
+								data = new String[classes.size()][];
 								int i=0;
 								for (Class classEntry:classes) {
-									data[i] = new String[3];
+									data[i] = new String[headers.length];
 									data[i][0]=classEntry.getId();
-									data[i][1]=classEntry.getParentName();
-									data[i][2]=classEntry.getGrade();
+									data[i][1]=classEntry.getGrade();
+									data[i][2]=classEntry.getSubjects();
+									data[i][3]=classEntry.getSex();
+									data[i][4]=classEntry.getParentName();
+									data[i][5]=classEntry.getPhone();
+									data[i][6]=classEntry.getAdddress();
+									data[i][7]=classEntry.getDateReceive();
+									data[i][8]=classEntry.getSchedule();
+									data[i][9]=classEntry.getSalary();
+									data[i][10]=classEntry.getDemain();
+									data[i][11]=classEntry.getOthers();
+									data[i][12]=String.valueOf(classEntry.getFee());
+									data[i][13]=classEntry.getHandOverPerson();
+									data[i][14]=classEntry.getDateHandOver();
 									i++;
 								}
 								
 								table=new JTable(data,headers);
-								scrollPane.setViewportView(table);
+								table.setAutoResizeMode(table.AUTO_RESIZE_OFF);
+								
+								for (int k=0;k<headers.length;k++) {
+									table.getColumnModel().getColumn(k).setPreferredWidth(100);
+								}
+								table.getColumnModel().getColumn(0).setPreferredWidth(30);
+								table.getColumnModel().getColumn(1).setPreferredWidth(40);
+								
+							    scrollPane.setViewportView(table);
 								
 							} catch (IOException | GeneralSecurityException e1) {
 								// TODO Auto-generated catch block
@@ -194,7 +222,7 @@ public class MainView implements IMainView{
 		frmMain.getContentPane().add(lblNewLabel);
 
 		tabbedPane_Main = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane_Main.setBounds(10, 11, 574, 347);
+		tabbedPane_Main.setBounds(0, 11, 584, 347);
 		tabbedPane_Main.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent arg0) {
@@ -355,12 +383,11 @@ public class MainView implements IMainView{
 		tabbedPane_Main.addTab("Quản lý lớp", null, layeredPane_ClassManager, null);
 		
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 0, 572, 305);
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPane.setBounds(0, 0, 579, 305);
 		layeredPane_ClassManager.add(scrollPane);
-		
-		
-		
-		
+	
 	}
 
 	/**
