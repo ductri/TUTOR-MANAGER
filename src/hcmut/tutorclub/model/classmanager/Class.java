@@ -12,6 +12,9 @@ public class Class {
 	private String demain;
 	private int fee;
 	private String handOverPerson;
+	private String phone;
+	private String grade;
+	private String subjects;
 	private String others;
 	private Student studentTaken;
 	
@@ -92,6 +95,24 @@ public class Class {
 	}
 	public void setHandOverPerson(String handOverPerson) {
 		this.handOverPerson = handOverPerson;
+	}
+	public String getPhone() {
+		return phone;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+	public String getGrade() {
+		return grade;
+	}
+	public void setGrade(String grade) {
+		this.grade = grade;
+	}
+	public String getSubjects() {
+		return subjects;
+	}
+	public void setSubjects(String subjects) {
+		this.subjects = subjects;
 	}
 	
 }

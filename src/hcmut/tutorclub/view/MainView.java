@@ -20,6 +20,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
+import hcmut.tutorclub.controller.IClassManagerController;
 import hcmut.tutorclub.controller.IPrinterController;
 import hcmut.tutorclub.model.printer.CoverLetter;
 import hcmut.tutorclub.model.printer.Letter;
@@ -65,6 +66,7 @@ public class MainView implements IMainView{
 	 *                                       *
 	 ****************************************/
 	private IPrinterController printerController;
+	private IClassManagerController classManagerController;
 		
 	private void initialEventProcess() {
 		buttonTab1In.addActionListener(new ActionListener() {
@@ -321,5 +323,11 @@ public class MainView implements IMainView{
 	public void setPrinterController(IPrinterController printerController) {
 		
 		this.printerController = printerController;
+	}
+
+	@Override
+	public void setClassManagerController(IClassManagerController classManagerController) {
+		
+		this.classManagerController = classManagerController;
 	}
 }

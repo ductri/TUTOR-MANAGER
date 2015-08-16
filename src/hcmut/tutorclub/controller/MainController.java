@@ -23,6 +23,7 @@ public class MainController implements IMainController{
 	public void startUp() {
 		
 		mainView.setPrinterController(printerController);
+		mainView.setClassManagerController(classManagerController);
 		mainView.show();
 	}
 	

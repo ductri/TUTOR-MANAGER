@@ -1,16 +1,24 @@
 package hcmut.tutorclub.controller;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.security.GeneralSecurityException;
 import java.util.List;
+
+import com.google.gdata.util.ServiceException;
 
 import hcmut.tutorclub.model.classmanager.Class;
 import hcmut.tutorclub.model.classmanager.Student;
 public interface IClassManagerController {
 	
+	void authorize() throws IOException, GeneralSecurityException;
+	boolean isAuthorization();
 	/**
 	 * Get list of classes which has not handed over yet.
 	 * @return List of classes
+	 * @throws ServiceException 
 	 */
-	List<Class> findClassNotHandOver();
+	List<Class> findClassNotHandOver() throws MalformedURLException, IOException, ServiceException;
 	
 	/**
 	 * Get list of students which have already been handed over at least 1 class.
