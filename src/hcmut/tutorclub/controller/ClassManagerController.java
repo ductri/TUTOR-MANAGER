@@ -90,17 +90,17 @@ public class ClassManagerController implements IClassManagerController {
         			Set<String> headers = row.getCustomElements().getTags();
 	        		Iterator<String> itrHeaders = headers.iterator(); 
 	        		
-	        		classEntry.setId((String)itrHeaders.next());
-	        		classEntry.setDateReceive((String)itrHeaders.next());
-	        		classEntry.setDateHandOver((String)itrHeaders.next());
-	        		classEntry.setParentName((String)itrHeaders.next());
-	        		classEntry.setSex((String)itrHeaders.next());
-	        		classEntry.setPhone((String)itrHeaders.next());
-	        		classEntry.setAdddress((String)itrHeaders.next());
-	        		classEntry.setGrade((String)itrHeaders.next());
-	        		classEntry.setSubjects((String)itrHeaders.next());
-	        		classEntry.setSchedule((String)itrHeaders.next());
-	        		classEntry.setOthers((String)itrHeaders.next());
+	        		classEntry.setId(row.getCustomElements().getValue((String)itrHeaders.next()));
+	        		classEntry.setDateReceive(row.getCustomElements().getValue((String)itrHeaders.next()));
+	        		classEntry.setDateHandOver(row.getCustomElements().getValue((String)itrHeaders.next()));
+	        		classEntry.setParentName(row.getCustomElements().getValue((String)itrHeaders.next()));
+	        		classEntry.setSex(row.getCustomElements().getValue((String)itrHeaders.next()));
+	        		classEntry.setPhone(row.getCustomElements().getValue((String)itrHeaders.next()));
+	        		classEntry.setAdddress(row.getCustomElements().getValue((String)itrHeaders.next()));
+	        		classEntry.setGrade(row.getCustomElements().getValue((String)itrHeaders.next()));
+	        		classEntry.setSubjects(row.getCustomElements().getValue((String)itrHeaders.next()));
+	        		classEntry.setSchedule(row.getCustomElements().getValue((String)itrHeaders.next()));
+	        		classEntry.setOthers(row.getCustomElements().getValue((String)itrHeaders.next()));
 	        		classes.add(classEntry);
         		}
         	}

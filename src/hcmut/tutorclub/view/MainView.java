@@ -10,6 +10,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.GeneralSecurityException;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -17,14 +19,20 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
+import com.google.gdata.util.ServiceException;
 
 import hcmut.tutorclub.controller.IClassManagerController;
 import hcmut.tutorclub.controller.IPrinterController;
+import hcmut.tutorclub.model.classmanager.Class;
 import hcmut.tutorclub.model.printer.CoverLetter;
 import hcmut.tutorclub.model.printer.Letter;
-
 //TODO validate input
 public class MainView implements IMainView{
 	
@@ -32,9 +40,11 @@ public class MainView implements IMainView{
 	
 	/****************************************
 	 *                                       *
-	 *        --- Tab font letter --- 
+	 *        --- TABS --- 
 	 *                                       *
 	 ****************************************/
+	JTabbedPane tabbedPane_Main;
+	//--- Tab font letter ---
 	private JTextField textTab1Hoten;
 	private JTextField textTab1MSSV;
 	private JTextField textTab1Sdt;
@@ -42,14 +52,17 @@ public class MainView implements IMainView{
 	private JTextField textTab1Quequan;
 	private JTextField textTab1Noio;
 	
-	/****************************************
-	 *                                       *
-	 *        --- Tab back letter --- 
-	 *                                       *
-	 ****************************************/
+	//--- Tab back letter ---
 	private JTextField textTab2Ten;
 	private JTextField textTab2Diachi;
 	private JTextField textTab2Sdt;
+	
+	//--- Tab class manager ---
+	private JLayeredPane layeredPane_ClassManager;
+	private JScrollPane scrollPane;
+	private JTable table;
+	private String[] headers = new String[] {"ID","Tên phụ huynh", "Lớp"};
+	private String[][] data = new String[5][];
 	
 	/****************************************
 	 *                                       *
@@ -67,6 +80,7 @@ public class MainView implements IMainView{
 	 ****************************************/
 	private IPrinterController printerController;
 	private IClassManagerController classManagerController;
+	
 		
 	private void initialEventProcess() {
 		buttonTab1In.addActionListener(new ActionListener() {
@@ -90,6 +104,40 @@ public class MainView implements IMainView{
 			public void actionPerformed(ActionEvent arg0) {
 				printerController.printCoverLetter(new CoverLetter(textTab2Ten.getText(),
 						textTab2Diachi.getText(), textTab2Sdt.getText()));
+			}
+		});
+
+		tabbedPane_Main.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				if (tabbedPane_Main.getSelectedIndex() == 3) {
+					if (classManagerController != null) {
+						if (!classManagerController.isAuthorization()) {
+							try {
+								classManagerController.authorize();
+								List<Class> classes = classManagerController.findClassNotHandOver();
+								
+								int i=0;
+								for (Class classEntry:classes) {
+									data[i] = new String[3];
+									data[i][0]=classEntry.getId();
+									data[i][1]=classEntry.getParentName();
+									data[i][2]=classEntry.getGrade();
+									i++;
+								}
+								
+								table=new JTable(data,headers);
+								scrollPane.setViewportView(table);
+								
+							} catch (IOException | GeneralSecurityException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							} catch (ServiceException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+					}
+				}
 			}
 		});
 	}
@@ -135,7 +183,7 @@ public class MainView implements IMainView{
 		}
 		frmMain.setFont(new Font("Consolas", Font.PLAIN, 12));
 		frmMain.setTitle("MẪU IN GIAO/NHẬN LỚP - CLB Gia sư ĐH BK");
-		frmMain.setBounds(100, 100, 569, 433);
+		frmMain.setBounds(100, 100, 600, 433);
 		frmMain.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmMain.getContentPane().setLayout(null);
 
@@ -145,19 +193,19 @@ public class MainView implements IMainView{
 		lblNewLabel.setFont(new Font("Times New Roman", Font.ITALIC, 12));
 		frmMain.getContentPane().add(lblNewLabel);
 
-		JTabbedPane tabbedPane_Printer = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane_Printer.setBounds(10, 11, 520, 347);
-		tabbedPane_Printer.addFocusListener(new FocusAdapter() {
+		tabbedPane_Main = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane_Main.setBounds(10, 11, 574, 347);
+		tabbedPane_Main.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent arg0) {
 				textTab1Hoten.requestFocus();
 			}
 		});
-		tabbedPane_Printer.setFont(new Font("Times New Roman", Font.PLAIN, 14));
-		frmMain.getContentPane().add(tabbedPane_Printer);
+		tabbedPane_Main.setFont(new Font("Times New Roman", Font.PLAIN, 14));
+		frmMain.getContentPane().add(tabbedPane_Main);
 
 		JLayeredPane layeredPane_FrontLetter = new JLayeredPane();
-		tabbedPane_Printer.addTab("Thư giới thiệu -Mặt trước", null, layeredPane_FrontLetter, null);
+		tabbedPane_Main.addTab("Thư giới thiệu -Mặt trước", null, layeredPane_FrontLetter, null);
 		layeredPane_FrontLetter.setLayout(null);
 
 		JLabel lblHTnSv = new JLabel("Họ tên SV:");
@@ -238,7 +286,7 @@ public class MainView implements IMainView{
 		layeredPane_FrontLetter.add(lblMtIn);
 		
 		JLayeredPane layeredPane_BackLetter = new JLayeredPane();
-		tabbedPane_Printer.addTab("Thư giới thiệu - Mặt sau", null, layeredPane_BackLetter, null);
+		tabbedPane_Main.addTab("Thư giới thiệu - Mặt sau", null, layeredPane_BackLetter, null);
 		
 		buttonInMtSau = new JButton("In mặt sau");
 		
@@ -247,7 +295,7 @@ public class MainView implements IMainView{
 		layeredPane_BackLetter.add(buttonInMtSau);
 
 		JLayeredPane layeredPane_CoverLetter = new JLayeredPane();
-		tabbedPane_Printer.addTab("Bìa thư", null, layeredPane_CoverLetter, null);
+		tabbedPane_Main.addTab("Bìa thư", null, layeredPane_CoverLetter, null);
 
 		JLabel lblaPhnCh = new JLabel("2. Đưa phần chữ \"Kính gửi\" vào trước!");
 		lblaPhnCh.setBounds(45, 39, 371, 23);
@@ -302,6 +350,17 @@ public class MainView implements IMainView{
 		lblMtIn_1.setFont(new Font("Consolas", Font.BOLD | Font.ITALIC, 14));
 		lblMtIn_1.setBounds(45, 14, 371, 30);
 		layeredPane_CoverLetter.add(lblMtIn_1);
+		
+		layeredPane_ClassManager = new JLayeredPane();
+		tabbedPane_Main.addTab("Quản lý lớp", null, layeredPane_ClassManager, null);
+		
+		scrollPane = new JScrollPane();
+		scrollPane.setBounds(0, 0, 572, 305);
+		layeredPane_ClassManager.add(scrollPane);
+		
+		
+		
+		
 	}
 
 	/**
