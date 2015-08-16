@@ -1,4 +1,4 @@
-package hcmut.tutorclub.com;
+package hcmut.tutorclub.model.printer.printable;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;

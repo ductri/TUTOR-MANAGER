@@ -8,6 +8,5 @@ public interface IPrinterController {
 	void printCoverLetter(CoverLetter coverLetter);
 	void printFrontLetter(Letter letter);
 	void printBackLetter();
-	
-	void startup();
+
 }

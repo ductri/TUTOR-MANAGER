@@ -11,22 +11,22 @@ import javax.print.attribute.standard.Copies;
 import javax.print.attribute.standard.MediaSizeName;
 import javax.print.attribute.standard.PageRanges;
 
-import hcmut.tutorclub.com.BackLetterPrintable;
-import hcmut.tutorclub.com.CoverLetterPrintable;
-import hcmut.tutorclub.com.FrontLetterPrintable;
 import hcmut.tutorclub.model.printer.CoverLetter;
 import hcmut.tutorclub.model.printer.Letter;
+import hcmut.tutorclub.model.printer.printable.BackLetterPrintable;
+import hcmut.tutorclub.model.printer.printable.CoverLetterPrintable;
+import hcmut.tutorclub.model.printer.printable.FrontLetterPrintable;
 import hcmut.tutorclub.utils.PaperSize;
-import hcmut.tutorclub.view.IMainView;
 
 
 public class PrinterController implements IPrinterController{
 	
-	private IMainView mainView;
+	/**
+	 * This controller don't use directly printer view. Because this view
+	 * doesn't need to use data from other than user input.
+	 */
 	
-	public PrinterController(IMainView mainView) {
-		this.mainView = mainView;
-		this.mainView.setPrinterController(this);
+	public PrinterController() {
 	}
 	
 	@Override
@@ -38,7 +38,6 @@ public class PrinterController implements IPrinterController{
 		attSet.add(new Copies(1));
 		attSet.add(MediaSizeName.ISO_A5);
 		attSet.add(new PageRanges(1));
-		
 		
 		Paper paper = new Paper();
 		paper.setSize(PaperSize.A5_WIDTH, PaperSize.A5_HEIGHT);
@@ -57,7 +56,6 @@ public class PrinterController implements IPrinterController{
 				e.printStackTrace();
 			}
 		}
-		
 	}
 
 	@Override
@@ -124,8 +122,4 @@ public class PrinterController implements IPrinterController{
 		}
 	}
 
-	@Override
-	public void startup() {
-		mainView.show();
-	}
 }
