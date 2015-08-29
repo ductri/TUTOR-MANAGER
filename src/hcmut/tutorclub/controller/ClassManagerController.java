@@ -36,7 +36,7 @@ import hcmut.tutorclub.model.classmanager.Student;
 
 public class ClassManagerController implements IClassManagerController {
 
-	private static final String SHEET_NAME = "Copy of DICH-VU.xlsx";
+	private static final String SHEET_NAME = "DICH-VU.xlsx";
 	private static final String WORKSHEET_NAME = "GIA SƯ 2015";
 	private static final String KEYWORD = "mssv";
 	private static final String SHEETS_SCOPE = "https://spreadsheets.google.com/feeds";
