@@ -2,7 +2,6 @@ package hcmut.tutorclub.view;
 
 
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
@@ -11,6 +10,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.security.GeneralSecurityException;
 import java.util.List;
 
@@ -20,7 +20,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
@@ -28,8 +27,6 @@ import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
 
 import com.google.gdata.util.ServiceException;
 
@@ -38,6 +35,8 @@ import hcmut.tutorclub.controller.IPrinterController;
 import hcmut.tutorclub.model.classmanager.Class;
 import hcmut.tutorclub.model.printer.CoverLetter;
 import hcmut.tutorclub.model.printer.Letter;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 //TODO validate input
 public class MainView implements IMainView{
 	
@@ -122,40 +121,7 @@ public class MainView implements IMainView{
 						if (!classManagerController.isAuthorization()) {
 							try {
 								classManagerController.authorize();
-								List<Class> classes = classManagerController.findClassNotHandOver();
-								data = new String[classes.size()][];
-								int i=0;
-								for (Class classEntry:classes) {
-									data[i] = new String[headers.length];
-									data[i][0]=classEntry.getId();
-									data[i][1]=classEntry.getGrade();
-									data[i][2]=classEntry.getSubjects();
-									data[i][3]=classEntry.getSex();
-									data[i][4]=classEntry.getParentName();
-									data[i][5]=classEntry.getPhone();
-									data[i][6]=classEntry.getAdddress();
-									data[i][7]=classEntry.getDateReceive();
-									data[i][8]=classEntry.getSchedule();
-									data[i][9]=classEntry.getSalary();
-									data[i][10]=classEntry.getDemain();
-									data[i][11]=classEntry.getOthers();
-									data[i][12]=String.valueOf(classEntry.getFee());
-									data[i][13]=classEntry.getHandOverPerson();
-									data[i][14]=classEntry.getDateHandOver();
-									i++;
-								}
-								
-								table=new JTable(data,headers);
-								table.setAutoResizeMode(table.AUTO_RESIZE_OFF);
-								
-								for (int k=0;k<headers.length;k++) {
-									table.getColumnModel().getColumn(k).setPreferredWidth(100);
-								}
-								table.getColumnModel().getColumn(0).setPreferredWidth(30);
-								table.getColumnModel().getColumn(1).setPreferredWidth(40);
-								
-							    scrollPane.setViewportView(table);
-								
+								showClasses();
 							} catch (IOException | GeneralSecurityException e1) {
 								// TODO Auto-generated catch block
 								e1.printStackTrace();
@@ -169,7 +135,42 @@ public class MainView implements IMainView{
 			}
 		});
 	}
-
+	
+	private void showClasses() throws MalformedURLException, IOException, ServiceException {
+		List<Class> classes = classManagerController.findClassNotHandOver();
+		data = new String[classes.size()][];
+		int i=0;
+		for (Class classEntry:classes) {
+			data[i] = new String[headers.length];
+			data[i][0]=classEntry.getId();
+			data[i][1]=classEntry.getGrade();
+			data[i][2]=classEntry.getSubjects();
+			data[i][3]=classEntry.getSex();
+			data[i][4]=classEntry.getParentName();
+			data[i][5]=classEntry.getPhone();
+			data[i][6]=classEntry.getAdddress();
+			data[i][7]=classEntry.getDateReceive();
+			data[i][8]=classEntry.getSchedule();
+			data[i][9]=classEntry.getSalary();
+			data[i][10]=classEntry.getDemain();
+			data[i][11]=classEntry.getOthers();
+			data[i][12]=String.valueOf(classEntry.getFee());
+			data[i][13]=classEntry.getHandOverPerson();
+			data[i][14]=classEntry.getDateHandOver();
+			i++;
+		}
+		
+		table=new JTable(data,headers);
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		
+		for (int k=0;k<headers.length;k++) {
+			table.getColumnModel().getColumn(k).setPreferredWidth(100);
+		}
+		table.getColumnModel().getColumn(0).setPreferredWidth(30);
+		table.getColumnModel().getColumn(1).setPreferredWidth(40);
+		
+	    scrollPane.setViewportView(table);
+	}
 	private void setValidateInput() {
 		
 		textTab2Ten.addKeyListener(new KeyAdapter() {			
@@ -385,8 +386,23 @@ public class MainView implements IMainView{
 		scrollPane = new JScrollPane();
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollPane.setBounds(0, 0, 579, 305);
+		scrollPane.setBounds(0, 33, 579, 272);
 		layeredPane_ClassManager.add(scrollPane);
+		
+		JButton btnNewButton = new JButton("Refresh");
+		btnNewButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				try {
+					showClasses();
+				} catch (IOException | ServiceException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+		btnNewButton.setBounds(0, 0, 579, 32);
+		layeredPane_ClassManager.add(btnNewButton);
 	
 	}
 
